@@ -1,42 +1,35 @@
 //🟦🟩🟥🟨
 const playwright = require('playwright');
-const readline = require('readline');
 
-const { realizarLogin } = require('./services/loginService');
-const { dispararEmail } = require('./services/emailService');
-const { randomDelay, delay } = require('./utils/delay');
-const { templateRenovacao } = require('./templates/renovacao');
-const { renderTemplate } = require('./utils/templateEngine');
-const { carregarClientes } = require('./services/xlsxService');
-const { validarCliente } = require('./services/clienteValidationService');
-const { sanitizarCliente } = require('./services/clienteSanitizeService');
-const { log } = require('console');
+const path = require('path');
+const { realizarLogin } = require('./loginService');
+const { dispararEmail } = require('./emailService');
+const { randomDelay, delay } = require('../utils/delay');
+const { templateRenovacao } = require('../templates/renovacao');
+const { renderTemplate } = require('../utils/templateEngine');
+const { carregarClientes } = require('./xlsxService');
+const { validarCliente } = require('./clienteValidationService');
+const { sanitizarCliente } = require('./clienteSanitizeService');
 
-const nomeArquivo = process.argv[2];
+async function executarCampanha(caminhoArquivo){
+    let enviados = 0;
+    let falhas = 0;
+    let invalidos = 0;
+    let duplicados = 0;
 
-let enviados = 0;
-let falhas = 0;
-let invalidos = 0;
-let duplicados = 0;
+    const inicioExecucao = new Date();
 
-const inicioExecucao = new Date();
+    const logsCampanha = [];
 
-const logsCampanha = [];
+    const clientes = carregarClientes(caminhoArquivo);
 
-if(!nomeArquivo){
-    console.error('🟥🟥🟥 - Por favor, forneça o nome do arquivo Excel como argumento. Exemplo: node index.js clientes.xlsx - 🟥🟥🟥');
-    process.exit();
-}
+    const nomeArquivo = path.basename(caminhoArquivo);
 
-const clientes = carregarClientes(`./uploads/${nomeArquivo}`);
-
-console.log('-------------------------------')
-
-console.log(`🟩🟩🟩 - Arquivo "${nomeArquivo}" importado com sucesso - 🟩🟩🟩`);
-console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processamento - 🟩🟩🟩`);
+    console.log('-------------------------------');
+    console.log(`🟩🟩🟩 - Arquivo "${nomeArquivo}" importado com sucesso - 🟩🟩🟩`);
+    console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processamento - 🟩🟩🟩`);
 
 
-(async () => {
     const browser = await playwright.chromium.launch({
         headless: false
     });
@@ -136,7 +129,7 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
 
     const relatorio = {
         inicioExecucao: new Date(inicioExecucao).toISOString(),
-        fimExecucao: new Date().toISOString(),
+        fimExecucao: fimExecucao.toISOString(),
         tempoTotalMinutos: tempoTotal,
         resumo: {
             enviados,
@@ -154,10 +147,14 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
     fs.writeFileSync(
         `./logs/campanha-${dataArquivo}.json`,
         JSON.stringify(relatorio, null, 2)
-    )
+    );
 
-})();
+    await browser.close();
 
+};
 
+module.exports = {
+    executarCampanha
+};
 
 // npx playwright codegen https://app.crisp.chat/initiate/login/
