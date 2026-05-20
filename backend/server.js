@@ -1,5 +1,19 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
+const upload = multer({ storage });
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/');
+    },
+    filename: (req, file, cb) => {
+        const timestamp = Date.now();
+        const nomeArquivo = `${timestamp}-${file.originalname}`;
+        cb(null, nomeArquivo);
+    }
+});
 
 const { executarCampanha } = require('./services/campanhaService');
 
@@ -16,21 +30,30 @@ app.get('/', (req, res) => {
     });
 });
 
-app.get('/teste-campanha', async (req, res) => {
+app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
     try {
-        await executarCampanha('./uploads/clientes-teste.xlsx');
+        if(!req.file){
+            return res.status(400).json({
+                sucesso: false,
+                mensagem: 'Nenhum arquivo enviado. Por favor, envie um arquivo Excel.'
+            });
+        }
 
-        res.json({
+        await executarCampanha(req.file.path);
+
+        return res.json({
             sucesso: true,
             mensagem: 'Campanha executada com sucesso!'
         });
+
     } catch (error) {
         console.error('Erro ao executar campanha:', error);
-        res.status(500).json({
+
+        return res.status(500).json({
             sucesso: false,
             erro: error.message || 'Erro ao executar campanha'
         });
-    }
+    } 
 });
 
 app.listen(3000, () => {
