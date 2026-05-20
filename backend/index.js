@@ -21,6 +21,8 @@ let duplicados = 0;
 
 const inicioExecucao = new Date();
 
+const logsCampanha = [];
+
 if(!nomeArquivo){
     console.error('🟥🟥🟥 - Por favor, forneça o nome do arquivo Excel como argumento. Exemplo: node index.js clientes.xlsx - 🟥🟥🟥');
     process.exit();
@@ -58,6 +60,13 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
         if(emailsProcessados.has(clienteSanitizado.email)){
             duplicados++;
             console.log(`🟥🟥🟥 - E-mail duplicado encontrado para ${clienteSanitizado.email}. Pulando cliente: ${cliente.nome} - 🟥🟥🟥`);
+
+            logsCampanha.push({
+                email: clienteSanitizado.email,
+                status: 'duplicado',
+                mensagem: 'E-mail duplicado',
+                data: new Date().toISOString()
+            });
             continue;
         }
 
@@ -67,6 +76,13 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
             invalidos++;
             console.log(`🟥🟥🟥 - Cliente inválido: ${cliente.nome} - 🟥🟥🟥`);
             console.log(`Erros: ${validacao.erros.join(', ')}`);
+
+            logsCampanha.push({
+                email: clienteSanitizado.email,
+                status: 'inválido',
+                mensagem: validacao.erros.join(', '),
+                data: new Date().toISOString()
+            });
             continue;
         };
 
@@ -81,9 +97,24 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
         if (enviou.sucesso){
             enviados++;
             console.log(`🟩🟩 - E-mail enviado com sucesso para ${clienteSanitizado.nome} - 🟩🟩`);
+
+            logsCampanha.push({
+                email: clienteSanitizado.email,
+                status: 'enviado',
+                mensagem: 'E-mail enviado com sucesso',
+                data: new Date().toISOString()
+            });
+
         } else {
             falhas++;
             console.log('🟥🟥 - Falha ao disparar email:', enviou.erro, ' - 🟥🟥');
+
+            logsCampanha.push({
+                email: clienteSanitizado.email,
+                status: 'falha',
+                mensagem: `Erro: ${enviou.erro}`,
+                data: new Date().toISOString()
+            });
         }
 
         await randomDelay(7000, 12000);
@@ -93,6 +124,7 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
 
     const tempoTotal = ((fimExecucao - inicioExecucao) /1000 /60).toFixed(2);
 
+
     console.log('-------------------------------');
     console.log('📊 RELATÓRIO FINAL')
     console.log(`🟩 Enviados: ${enviados}`);
@@ -101,6 +133,28 @@ console.log(`🟩🟩🟩 - ${clientes.length} clientes carregados para processa
     console.log(`🔁 Duplicados: ${duplicados}`);
     console.log(`⏱️ Tempo Total: ${tempoTotal} minutos`);
     console.log('-------------------------------');
+
+    const relatorio = {
+        inicioExecucao: new Date(inicioExecucao).toISOString(),
+        fimExecucao: new Date().toISOString(),
+        tempoTotalMinutos: tempoTotal,
+        resumo: {
+            enviados,
+            falhas,
+            invalidos,
+            duplicados
+        },
+        detalhes: logsCampanha
+    };
+
+    const fs = require('fs');
+
+    const dataArquivo = new Date().toISOString().replace(/[:.]/g, '-');
+
+    fs.writeFileSync(
+        `./logs/campanha-${dataArquivo}.json`,
+        JSON.stringify(relatorio, null, 2)
+    )
 
 })();
 
