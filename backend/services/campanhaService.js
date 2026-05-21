@@ -2,6 +2,7 @@
 const playwright = require('playwright');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
 
 const { realizarLogin } = require('./loginService');
 const { dispararEmail } = require('./emailService');
@@ -210,6 +211,11 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
         if(browser){
             await browser.close();
+        }
+
+        if(fs.existsSync(caminhoArquivo)){
+            fs.unlinkSync(caminhoArquivo);
+            console.log('🗑️ Upload removido com sucesso')
         }
     }
 
