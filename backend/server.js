@@ -3,6 +3,8 @@ const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
 
+const { campanhas } = require('./store/campanhasStore');
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, './uploads/');
@@ -16,7 +18,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-const { executarCampanha } = require('./services/campanhaService');
+const { iniciarCampanha } = require('./services/campanhaService');
 
 const app = express();
 
@@ -40,11 +42,12 @@ app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
             });
         }
 
-        await executarCampanha(req.file.path);
+        const campanhaId = iniciarCampanha(req.file.path);
 
         return res.json({
             sucesso: true,
-            mensagem: 'Campanha executada com sucesso!'
+            campanhaId,
+            mensagem: 'Campanha iniciada com sucesso!'
         });
 
     } catch (error) {
@@ -56,6 +59,24 @@ app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
         });
     } 
 });
+
+app.get('/campanhas/:id', (req, res) => {
+    const campanhaId = req.params.id;
+
+    const campanha = campanhas[campanhaId];
+
+    if(!campanha){
+        return res.status(404).json({
+            sucesso: false,
+            mensagem: 'Campanha não encontrada'
+        });
+    }
+
+    return res.json({
+        sucesso: true,
+        campanha
+    });
+})
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000 🚀');

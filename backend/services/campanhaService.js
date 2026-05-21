@@ -13,8 +13,17 @@ const { validarCliente } = require('./clienteValidationService');
 const { sanitizarCliente } = require('./clienteSanitizeService');
 const { campanhas } = require('../store/campanhasStore');
 
-async function executarCampanha(caminhoArquivo){
+function iniciarCampanha(caminhoArquivo){
     const campanhaId = uuidv4();
+
+    executarCampanha(campanhaId, caminhoArquivo);
+
+    return campanhaId;
+}
+
+async function executarCampanha(campanhaId, caminhoArquivo){
+
+    const codigoCampanha = `CMP-${Date.now()}`;
 
     let enviados = 0;
     let falhas = 0;
@@ -23,6 +32,7 @@ async function executarCampanha(caminhoArquivo){
 
     campanhas[campanhaId] = {
         id: campanhaId,
+        codigo: codigoCampanha,
         status: 'executando',
         enviados: 0,
         falhas: 0,
@@ -177,7 +187,8 @@ async function executarCampanha(caminhoArquivo){
 };
 
 module.exports = {
-    executarCampanha
+    executarCampanha,
+    iniciarCampanha
 };
 
 // npx playwright codegen https://app.crisp.chat/initiate/login/
