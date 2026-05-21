@@ -41,6 +41,8 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         iniciadoEm: new Date().toISOString(),
     };
 
+    salvarCampanha(campanhas[campanhaId]);
+
     const inicioExecucao = new Date();
 
     const logsCampanha = [];
@@ -79,6 +81,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         if(emailsProcessados.has(clienteSanitizado.email)){
             duplicados++;
             campanhas[campanhaId].duplicados = duplicados;
+            salvarCampanha(campanhas[campanhaId]);
             console.log(`🟥🟥🟥 - E-mail duplicado encontrado para ${clienteSanitizado.email}. Pulando cliente: ${cliente.nome} - 🟥🟥🟥`);
 
             logsCampanha.push({
@@ -95,6 +98,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         if(!validacao.valido){
             invalidos++;
             campanhas[campanhaId].invalidos = invalidos;
+            salvarCampanha(campanhas[campanhaId]);
             console.log(`🟥🟥🟥 - Cliente inválido: ${cliente.nome} - 🟥🟥🟥`);
             console.log(`Erros: ${validacao.erros.join(', ')}`);
 
@@ -117,6 +121,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
         if (enviou.sucesso){
             enviados++;
+            salvarCampanha(campanhas[campanhaId]);
             campanhas[campanhaId].enviados = enviados;
             console.log(`🟩🟩 - E-mail enviado com sucesso para ${clienteSanitizado.nome} - 🟩🟩`);
 
@@ -129,6 +134,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
         } else {
             falhas++;
+            salvarCampanha(campanhas[campanhaId]);
             campanhas[campanhaId].falhas = falhas;
             console.log('🟥🟥 - Falha ao disparar email:', enviou.erro, ' - 🟥🟥');
 
@@ -180,6 +186,8 @@ async function executarCampanha(campanhaId, caminhoArquivo){
     );
 
     campanhas[campanhaId].status = 'finalizada';
+    campanhas[campanhaId].finalizadaEm = new Date().toISOString();
+    salvarCampanha(campanhas[campanhaId]);
     return campanhaId;
     
     await browser.close();

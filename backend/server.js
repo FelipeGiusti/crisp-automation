@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 
 const { campanhas } = require('./store/campanhasStore');
+const { salvarCampanha, buscarCampanhas } = require('./services/campanhaPersistenceService');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -77,6 +78,23 @@ app.get('/campanhas/:id', (req, res) => {
         campanha
     });
 })
+
+app.get('/campanhas', (req, res) => {
+    try{
+        const campanhas = buscarCampanhas();
+
+        return res.json({
+            sucesso: true,
+            campanhas
+        });
+    } catch (error) {
+        return res.status(500).json({
+            sucesso: false,
+            erro: error.message || 'Erro ao buscar campanhas'
+        });
+    }
+});
+
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000 🚀');
