@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const path = require('path');
-const upload = multer({ storage });
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -14,6 +13,8 @@ const storage = multer.diskStorage({
         cb(null, nomeArquivo);
     }
 });
+
+const upload = multer({ storage });
 
 const { executarCampanha } = require('./services/campanhaService');
 

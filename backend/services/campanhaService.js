@@ -1,7 +1,8 @@
 //🟦🟩🟥🟨
 const playwright = require('playwright');
-
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
 const { realizarLogin } = require('./loginService');
 const { dispararEmail } = require('./emailService');
 const { randomDelay, delay } = require('../utils/delay');
@@ -10,12 +11,25 @@ const { renderTemplate } = require('../utils/templateEngine');
 const { carregarClientes } = require('./xlsxService');
 const { validarCliente } = require('./clienteValidationService');
 const { sanitizarCliente } = require('./clienteSanitizeService');
+const { campanhas } = require('../store/campanhasStore');
 
 async function executarCampanha(caminhoArquivo){
+    const campanhaId = uuidv4();
+
     let enviados = 0;
     let falhas = 0;
     let invalidos = 0;
     let duplicados = 0;
+
+    campanhas[campanhaId] = {
+        id: campanhaId,
+        status: 'executando',
+        enviados: 0,
+        falhas: 0,
+        invalidos: 0,
+        duplicados: 0,
+        iniciadoEm: new Date().toISOString(),
+    };
 
     const inicioExecucao = new Date();
 
@@ -24,6 +38,8 @@ async function executarCampanha(caminhoArquivo){
     const clientes = carregarClientes(caminhoArquivo);
 
     const nomeArquivo = path.basename(caminhoArquivo);
+
+    campanhas[campanhaId].totalClientes = clientes.length;
 
     console.log('-------------------------------');
     console.log(`🟩🟩🟩 - Arquivo "${nomeArquivo}" importado com sucesso - 🟩🟩🟩`);
@@ -52,6 +68,7 @@ async function executarCampanha(caminhoArquivo){
 
         if(emailsProcessados.has(clienteSanitizado.email)){
             duplicados++;
+            campanhas[campanhaId].duplicados = duplicados;
             console.log(`🟥🟥🟥 - E-mail duplicado encontrado para ${clienteSanitizado.email}. Pulando cliente: ${cliente.nome} - 🟥🟥🟥`);
 
             logsCampanha.push({
@@ -67,6 +84,7 @@ async function executarCampanha(caminhoArquivo){
 
         if(!validacao.valido){
             invalidos++;
+            campanhas[campanhaId].invalidos = invalidos;
             console.log(`🟥🟥🟥 - Cliente inválido: ${cliente.nome} - 🟥🟥🟥`);
             console.log(`Erros: ${validacao.erros.join(', ')}`);
 
@@ -89,6 +107,7 @@ async function executarCampanha(caminhoArquivo){
 
         if (enviou.sucesso){
             enviados++;
+            campanhas[campanhaId].enviados = enviados;
             console.log(`🟩🟩 - E-mail enviado com sucesso para ${clienteSanitizado.nome} - 🟩🟩`);
 
             logsCampanha.push({
@@ -100,6 +119,7 @@ async function executarCampanha(caminhoArquivo){
 
         } else {
             falhas++;
+            campanhas[campanhaId].falhas = falhas;
             console.log('🟥🟥 - Falha ao disparar email:', enviou.erro, ' - 🟥🟥');
 
             logsCampanha.push({
@@ -149,6 +169,9 @@ async function executarCampanha(caminhoArquivo){
         JSON.stringify(relatorio, null, 2)
     );
 
+    campanhas[campanhaId].status = 'finalizada';
+    return campanhaId;
+    
     await browser.close();
 
 };
