@@ -22,7 +22,20 @@ function buscarCampanhas(){
     return campanhas;
 }
 
+function buscarCampanhaPorId(campanhaId){
+    const caminhoArquivo = path.join(pastaCampanhas, `${campanhaId}.json`);
+
+    if(!fs.existsSync(caminhoArquivo)){
+        return null;
+    }
+
+    const conteudo = fs.readFileSync(caminhoArquivo, 'utf-8');
+
+    return JSON.parse(conteudo);
+}
+
 module.exports = {
     salvarCampanha,
-    buscarCampanhas
+    buscarCampanhas,
+    buscarCampanhaPorId
 };

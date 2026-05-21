@@ -1,5 +1,13 @@
 const campanhas = [];
 
+let campanhaEmExecucao = false;
+
 module.exports = {
-    campanhas
+    campanhas,
+    get campanhaEmExecucao(){
+        return campanhaEmExecucao;
+    },
+    set campanhaEmExecucao(valor){
+        campanhaEmExecucao = valor;
+    }
 };

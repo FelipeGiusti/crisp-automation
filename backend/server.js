@@ -4,7 +4,8 @@ const multer = require('multer');
 const path = require('path');
 
 const { campanhas } = require('./store/campanhasStore');
-const { salvarCampanha, buscarCampanhas } = require('./services/campanhaPersistenceService');
+const campanhasStore = require('./store/campanhasStore');
+const { salvarCampanha, buscarCampanhas, buscarCampanhaPorId } = require('./services/campanhaPersistenceService');
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -43,6 +44,15 @@ app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
             });
         }
 
+        if(campanhasStore.campanhaEmExecucao){
+            return res.status(409).json({
+                sucesso: false,
+                mensagem: 'Já existe uma campanha em execução.'
+            });
+        }
+
+        campanhasStore.campanhaEmExecucao = true;
+
         const campanhaId = iniciarCampanha(req.file.path);
 
         return res.json({
@@ -64,7 +74,7 @@ app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
 app.get('/campanhas/:id', (req, res) => {
     const campanhaId = req.params.id;
 
-    const campanha = campanhas[campanhaId];
+    const campanha = buscarCampanhaPorId(campanhaId);
 
     if(!campanha){
         return res.status(404).json({
