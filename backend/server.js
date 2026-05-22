@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 
 const { campanhas } = require('./store/campanhasStore');
@@ -87,7 +88,7 @@ app.get('/campanhas/:id', (req, res) => {
         sucesso: true,
         campanha
     });
-})
+});
 
 app.get('/campanhas', (req, res) => {
     try{
@@ -105,6 +106,21 @@ app.get('/campanhas', (req, res) => {
     }
 });
 
+app.get('/campanhas', (req, res) => {
+    const pastaCampanhas = path.join(__dirname, 'logs');
+
+    const arquivos = fs.readdirSync(pastaCampanhas);
+
+    const campanhas = arquivos.map((arquivo) => {
+        const caminhoArquivo = path.join(pastaCampanhas, arquivo);
+
+        const conteudo = fs.readFileSync(caminhoArquivo, 'utf-8');
+
+        return JSON.parse(conteudo);
+    })
+
+    res.json(campanhas);
+});
 
 app.listen(3000, () => {
     console.log('Servidor rodando na porta 3000 🚀');
