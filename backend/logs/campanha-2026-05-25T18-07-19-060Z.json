@@ -1,0 +1,19 @@
+{
+  "inicioExecucao": "2026-05-25T18:06:30.411Z",
+  "fimExecucao": "2026-05-25T18:07:19.056Z",
+  "tempoTotalMinutos": "0.81",
+  "resumo": {
+    "enviados": 1,
+    "falhas": 0,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "mariana@email.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-05-25T18:07:09.593Z"
+    }
+  ]
+}

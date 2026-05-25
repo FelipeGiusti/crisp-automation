@@ -12,8 +12,8 @@ const { renderTemplate } = require('../utils/templateEngine');
 const { carregarClientes } = require('./xlsxService');
 const { validarCliente } = require('./clienteValidationService');
 const { sanitizarCliente } = require('./clienteSanitizeService');
-const { campanhas } = require('../store/campanhasStore');
 const campanhasStore = require('../store/campanhasStore');
+const { campanhas } = campanhasStore;
 const { salvarCampanha } = require('./campanhaPersistenceService');
 const { CAMPANHA_STATUS } = require('../constants/campanhaStatus');
 
@@ -125,12 +125,38 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
             const mensagem = renderTemplate(templateRenovacao, clienteSanitizado);
 
-            const enviou = await dispararEmail(page, clienteSanitizado, mensagem);
+            let enviou;
+
+            let tentativas = 0;
+
+            const maxTentativas = 3;
+
+            while(tentativas < maxTentativas){
+                tentativas++;
+                console.log(`🔁 Tentativa ${tentativas} para enviar e-mail para ${clienteSanitizado.nome} (${clienteSanitizado.email})`);
+
+                try {
+                    enviou = await Promisse.race([
+                        dispararEmail(page, clienteSanitizado, mensagem),
+                        new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout no envio do e-mail')), 30000))
+                    ]);
+                    if(enviou.sucesso){
+                        break;
+                    }
+                } catch (error) {
+                    enviou = {
+                        sucesso: false,
+                        erro: error.message
+                    };
+                }
+                console.log(`🟥 Falha na tentativa ${tentativas} para ${clienteSanitizado.email}: ${enviou.erro}`);
+                await delay(3000);
+            }
 
             if (enviou.sucesso){
                 enviados++;
-                salvarCampanha(campanhas[campanhaId]);
                 campanhas[campanhaId].enviados = enviados;
+                salvarCampanha(campanhas[campanhaId]);
                 console.log(`🟩🟩 - E-mail enviado com sucesso para ${clienteSanitizado.nome} - 🟩🟩`);
 
                 logsCampanha.push({
@@ -142,8 +168,8 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
             } else {
                 falhas++;
-                salvarCampanha(campanhas[campanhaId]);
                 campanhas[campanhaId].falhas = falhas;
+                salvarCampanha(campanhas[campanhaId]);
                 console.log('🟥🟥 - Falha ao disparar email:', enviou.erro, ' - 🟥🟥');
 
                 logsCampanha.push({
@@ -171,6 +197,8 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         console.log(`⏱️ Tempo Total: ${tempoTotal} minutos`);
         console.log('-------------------------------');
 
+        console.log(logsCampanha);
+
         const relatorio = {
             inicioExecucao: new Date(inicioExecucao).toISOString(),
             fimExecucao: fimExecucao.toISOString(),
@@ -195,15 +223,19 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
         campanhas[campanhaId].status = CAMPANHA_STATUS.FINALIZADA;
         campanhas[campanhaId].finalizadaEm = new Date().toISOString();
+        campanhas[campanhaId].resumo = {
+            enviados,
+            falhas,
+            invalidos,
+            duplicados
+        };
+        campanhas[campanhaId].detalhes = logsCampanha;
         salvarCampanha(campanhas[campanhaId]);
         return campanhaId;
 
-        const campanhaStore = require('../store/campanhasStore');
-        campanhaStore.campanhaEmExecucao = false;
-
     } catch (error) {
-        if(campanhasStore.campanhas[campanhaId]){
-            campanhasStore.campanhas[campanhaId].status = CAMPANHA_STATUS.ERRO;
+        if(campanhas[campanhaId]){
+            campanhas[campanhaId].status = CAMPANHA_STATUS.ERRO;
             salvarCampanha(campanhasStore.campanhas[campanhaId]);
         }
     } finally {
