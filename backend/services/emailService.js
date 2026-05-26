@@ -67,9 +67,9 @@ async function enviarEmail(page){
 
     //CONFIRMAR ENVIO DO E-MAIL
     //deixar essa linha abaixo comentada para evitar de ficar spammando o envio de e-mails durante os testes
-    // await page.getByRole('button', 
-        // { name: 'Enviar Mensagem' })
-        // .click();
+    await page.getByRole('button', 
+        { name: 'Enviar Mensagem' })
+        .click();
 
     console.log("🟩 - E-mail enviado com sucesso!");
 }

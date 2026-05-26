@@ -1,473 +1,285 @@
 # Crisp Automation
 
-Automação de processos e comunicação utilizando JavaScript + Playwright.
+Sistema fullstack de automação e orquestração de processos, com backend em Node.js e frontend em React (Vite).
 
-## Sobre o projeto
-
-O **Crisp Automation** é um projeto desenvolvido para automatizar fluxos operacionais relacionados ao atendimento, envio de mensagens, disparo de e-mails, validação de dados de clientes e execução de rotinas repetitivas dentro de plataformas web.
-
-O projeto utiliza:
-
-* Node.js
-* Playwright
-* JavaScript
-* Templates dinâmicos
-* Manipulação de dados
-* Fluxos assíncronos
-* Estratégias de automação resilientes
-
-O objetivo principal é reduzir trabalho manual, aumentar produtividade operacional e garantir padronização nos processos de comunicação.
+O projeto foi estruturado para centralizar regras de negócio, execução de rotinas automatizadas, manipulação de dados e interface administrativa para acompanhamento e operação.
 
 ---
 
-# Funcionalidades
+# Visão geral
 
-## Automação Web
+O **Crisp Automation** é uma aplicação voltada para automação de fluxos operacionais, organização de dados e execução de processos internos, com suporte a templates dinâmicos, armazenamento local e painel frontend para interação com o sistema.
 
-* Navegação automatizada
-* Login automático
-* Preenchimento de formulários
-* Interação com páginas dinâmicas
-* Esperas inteligentes
-* Tratamento de carregamento de elementos
-* Execução de fluxos em sequência
+Ele funciona como um hub central onde o backend executa as regras e o frontend oferece visibilidade e controle das operações.
 
-## Disparo de mensagens
+---
 
-* Envio automatizado de e-mails
-* Mensagens personalizadas por cliente
-* Templates dinâmicos
-* Saudação automática
-* Substituição de variáveis
-* Controle de execução
+# Arquitetura
 
-## Tratamento de dados
+O projeto é dividido em dois módulos principais:
 
-* Leitura de listas de clientes
-* Validação de informações
-* Sanitização de dados
-* Tratamento de valores nulos
-* Controle de clientes inválidos
+## Backend (Node.js)
 
-## Logs e rastreabilidade
+Responsável por:
 
-* Logs de execução
-* Identificação de falhas
-* Controle de sucesso e erro
-* Rastreamento de clientes processados
-* Monitoramento de etapas da automação
+* Regras de negócio
+* Processamento de dados
+* Execução de automações
+* Geração de templates
+* Persistência e logs
+* API para consumo do frontend
+
+## Frontend (React + Vite)
+
+Responsável por:
+
+* Interface administrativa
+* Visualização de dados
+* Interação com endpoints do backend
+* Organização de fluxos e operações
+
+---
+
+# Stack utilizada
+
+## Backend
+
+* Node.js
+* JavaScript (ESModules)
+* Arquitetura modular
+* Manipulação de arquivos (fs)
+* Estrutura baseada em serviços
+
+## Frontend
+
+* React
+* Vite
+* JavaScript (ES6+)
+* CSS
+
+## Infraestrutura local
+
+* Scripts batch para inicialização
+* Variáveis de ambiente (.env)
 
 ---
 
 # Estrutura do projeto
 
-```bash
-crisp-automation/
+```
+CRISP-AUTOMATION/
 │
-├── src/
+├── backend/
+│   ├── constants/
+│   ├── data/
+│   ├── logs/
+│   ├── node_modules/
 │   ├── services/
+│   ├── storage/
+│   ├── store/
 │   ├── templates/
+│   ├── uploads/
 │   ├── utils/
-│   ├── validators/
-│   ├── config/
-│   └── index.js
+│   ├── .env
+│   ├── server.js
+│   ├── package.json
+│   └── package-lock.json
 │
-├── data/
-│   ├── clientes.json
-│   └── logs/
+├── frontend/
+│   ├── node_modules/
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── eslint.config.js
+│   ├── package.json
+│   └── package-lock.json
 │
-├── .env
-├── package.json
-├── package-lock.json
+├── iniciar-crisp-automatio.bat
 └── README.md
 ```
 
 ---
 
-# Tecnologias utilizadas
+# Funcionalidades implementadas
 
-## Backend / Runtime
+## Backend
 
-* Node.js
-* JavaScript ES6+
+* Estrutura modular baseada em services
+* Gerenciamento de templates dinâmicos
+* Armazenamento de dados locais
+* Sistema de logs
+* Upload e manipulação de arquivos
+* Organização de estado via store
+* Constantes centralizadas
+* API para comunicação com frontend
 
-## Automação
+## Frontend
 
-* Playwright
+* Interface em React com Vite
+* Estrutura de páginas/componentes organizada
+* Consumo de API backend
+* Exibição de dados operacionais
+* Estilização base com CSS
 
-## Manipulação de dados
+## Sistema
 
-* JSON
-* File System (fs)
-* Path
-
-## Configuração
-
-* dotenv
+* Integração entre frontend e backend
+* Execução local simplificada via script .bat
+* Estrutura preparada para expansão modular
 
 ---
 
-# Requisitos
+# API (Backend)
 
-Antes de executar o projeto, você precisa ter instalado:
+O backend expõe endpoints para:
 
-* Node.js 18+
-* npm ou yarn
-* Navegadores do Playwright
+* Gerenciamento de dados
+* Execução de fluxos
+* Leitura de arquivos
+* Manipulação de templates
+* Operações administrativas
+
+*(Os endpoints podem variar conforme evolução do projeto)*
 
 ---
 
 # Instalação
 
-## Clone o repositório
+## Clonar o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/crisp-automation.git
+git clone <repo-url>
 ```
 
-## Acesse a pasta
+## Backend
 
 ```bash
-cd crisp-automation
-```
-
-## Instale as dependências
-
-```bash
+cd backend
 npm install
 ```
 
-## Instale os navegadores do Playwright
+## Frontend
 
 ```bash
-npx playwright install
+cd frontend
+npm install
 ```
 
 ---
 
-# Configuração do ambiente
+# Execução do projeto
 
-Crie um arquivo `.env` na raiz do projeto:
+## Backend
+
+```bash
+node server.js
+```
+
+## Frontend
+
+```bash
+npm run dev
+```
+
+---
+
+# Execução simplificada (Windows)
+
+O projeto inclui um script `.bat` para inicialização local rápida:
+
+```
+iniciar-crisp-automatio.bat
+```
+
+Esse script automatiza a inicialização do backend e frontend em ambientes locais.
+
+---
+
+# Variáveis de ambiente
+
+No backend:
 
 ```env
-CRISP_EMAIL=seu-email
-CRISP_PASSWORD=sua-senha
-HEADLESS=false
+PORT=3000
 ```
+
+Outras variáveis podem ser adicionadas conforme necessidade de integrações futuras.
 
 ---
 
-# Executando o projeto
+# Conceitos aplicados
 
-## Ambiente de desenvolvimento
-
-```bash
-npm run dev
-```
-
-## Ambiente de produção
-
-```bash
-npm start
-```
-
----
-
-# Fluxo geral da automação
-
-1. Inicializa navegador Playwright
-2. Realiza autenticação
-3. Carrega lista de clientes
-4. Valida dados dos clientes
-5. Renderiza template personalizado
-6. Executa envio automatizado
-7. Registra logs da operação
-8. Finaliza navegador
-
----
-
-# Exemplo de renderização dinâmica
-
-```javascript
-for (const cliente of clientes) {
-    cliente.saudacao = cliente.nome
-        ? `Oi, ${cliente.nome}! Tudo bem? 🙂`
-        : `Olá! Tudo bem? 🙂`;
-
-    const mensagem = renderTemplate(templateRenovacao, cliente);
-
-    const enviou = await dispararEmail(page, cliente, mensagem);
-
-    console.log(enviou);
-}
-```
-
----
-
-# Validação de clientes
-
-Exemplo de validação:
-
-```javascript
-function validarCliente(cliente) {
-    if (!cliente.email) return false;
-    if (!cliente.nome) return false;
-
-    return true;
-}
-```
-
-Uso:
-
-```javascript
-if (!validarCliente(cliente)) {
-    console.log('Cliente inválido');
-    continue;
-}
-```
-
----
-
-# Templates dinâmicos
-
-O projeto trabalha com templates personalizados utilizando placeholders.
-
-## Exemplo
-
-```txt
-{{saudacao}}
-
-Passando para lembrar sobre sua renovação.
-
-Qualquer dúvida estamos à disposição.
-```
-
-## Resultado
-
-```txt
-Oi, Felipe! Tudo bem? 🙂
-
-Passando para lembrar sobre sua renovação.
-
-Qualquer dúvida estamos à disposição.
-```
-
----
-
-# Logs
-
-Exemplo de log:
-
-```txt
-[INFO] Cliente processado com sucesso
-[ERROR] Falha ao enviar mensagem
-[WARNING] Cliente inválido
-```
-
----
-
-# Boas práticas implementadas
-
+* Arquitetura modular
 * Separação de responsabilidades
-* Funções reutilizáveis
-* Tratamento de erros
-* Código assíncrono com async/await
 * Estrutura escalável
-* Templates desacoplados
-* Configuração por variáveis de ambiente
-* Organização modular
+* Comunicação cliente-servidor
+* Persistência local de dados
+* Organização por camadas (services / store / utils)
 
 ---
 
-# Tratamento de erros
+# Organização do backend
 
-Exemplo:
-
-```javascript
-try {
-    await dispararEmail(page, cliente, mensagem);
-} catch (error) {
-    console.error('Erro ao disparar mensagem:', error);
-}
-```
-
----
-
-# Scripts úteis
-
-## Executar aplicação
-
-```bash
-npm start
-```
-
-## Desenvolvimento
-
-```bash
-npm run dev
-```
-
-## Executar testes
-
-```bash
-npm test
-```
+* **services/** → regras de negócio
+* **store/** → estado da aplicação
+* **templates/** → templates dinâmicos
+* **storage/** → persistência de dados
+* **uploads/** → arquivos enviados
+* **logs/** → registros do sistema
+* **utils/** → funções auxiliares
+* **constants/** → valores globais
 
 ---
 
-# Possíveis melhorias futuras
+# Organização do frontend
 
-* Dashboard operacional
-* Integração com banco de dados
+* **src/** → código principal
+* **assets/** → imagens e recursos
+* **App.jsx** → componente raiz
+* **main.jsx** → entrypoint
+
+---
+
+# Logs e rastreabilidade
+
+O sistema mantém logs locais para:
+
+* Execuções de processos
+* Erros e exceções
+* Operações do sistema
+
+---
+
+# Possíveis evoluções
+
+* Autenticação de usuários
+* Dashboard analítico
+* Banco de dados relacional
+* Deploy em nuvem
 * Sistema de filas
-* Retry automático
-* Controle de taxa de envio
-* Relatórios em tempo real
-* Integração com APIs externas
-* Painel administrativo
-* Dockerização
-* CI/CD
-* Métricas e observabilidade
+* Observabilidade e métricas
 
 ---
 
 # Segurança
 
-Recomendações:
-
-* Nunca subir `.env` para o GitHub
-* Utilizar variáveis de ambiente
-* Criar logs sem dados sensíveis
-* Implementar controle de autenticação
-* Utilizar criptografia para credenciais
+* Uso de variáveis de ambiente
+* Separação de dados sensíveis
+* Estrutura preparada para autenticação futura
 
 ---
 
-# Convenções do projeto
+# Objetivo do projeto
 
-## Nomeação
-
-* camelCase para variáveis
-* PascalCase para classes
-* kebab-case para arquivos quando necessário
-
-## Estrutura
-
-* Uma responsabilidade por arquivo
-* Serviços desacoplados
-* Utilitários reutilizáveis
-
----
-
-# Exemplo de arquitetura
-
-```txt
-Controller
-   ↓
-Service
-   ↓
-Validator
-   ↓
-Template Engine
-   ↓
-Automation Layer (Playwright)
-```
-
----
-
-# Troubleshooting
-
-## Navegador não abre
-
-Execute:
-
-```bash
-npx playwright install
-```
-
-## Dependências quebradas
-
-Execute:
-
-```bash
-npm install
-```
-
-## Problemas com cache
-
-Execute:
-
-```bash
-npm cache clean --force
-```
-
----
-
-# Performance
-
-O projeto foi pensado para:
-
-* Reduzir ações manuais
-* Minimizar tempo operacional
-* Escalar processos repetitivos
-* Facilitar manutenção
-* Melhorar rastreabilidade
-
----
-
-# Contribuição
-
-## Fluxo recomendado
-
-1. Fork do projeto
-2. Criar branch:
-
-```bash
-git checkout -b feature/nova-feature
-```
-
-3. Commit:
-
-```bash
-git commit -m "feat: adiciona nova feature"
-```
-
-4. Push:
-
-```bash
-git push origin feature/nova-feature
-```
-
-5. Abrir Pull Request
-
----
-
-# Licença
-
-Este projeto é privado e destinado para uso interno.
+Centralizar e simplificar processos operacionais, reduzindo tarefas manuais e permitindo escalabilidade através de automações estruturadas e interface web.
 
 ---
 
 # Autor
 
-Desenvolvido por Felipe Giusti.
-
----
-
-# Visão futura
-
-O Crisp Automation pode evoluir para:
-
-* Plataforma de automação operacional
-* Sistema inteligente de comunicação
-* Central de automações empresariais
-* Ferramenta SaaS escalável
-* Hub de automação de atendimento
-
----
-
-# Filosofia do projeto
-
-Automatizar não significa apenas executar tarefas automaticamente.
-
-Significa transformar processos repetitivos em operações confiáveis, escaláveis e sustentáveis.
+Felipe Giusti
