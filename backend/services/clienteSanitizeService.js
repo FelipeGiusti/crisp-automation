@@ -14,6 +14,24 @@ function formatarDataExcel(dataExcel) {
     return data.toLocaleDateString('pt-BR');
 }
 
+function formatarValor(valor){
+    if (valor === undefined || valor === null || valor === ''){
+        return '';
+    }
+
+    const numero = Number(valor);
+
+    if(isNaN(numero)){
+        return valor.toString().trim();
+    }
+
+    return numero.toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+     });
+}
+
+
 function sanitizarCliente(cliente){
     return {
         ...cliente,
@@ -31,9 +49,7 @@ function sanitizarCliente(cliente){
             ?.toString()
             ?.trim(),
         
-        valor: cliente.valor
-            ?.toString()
-            ?.trim(),
+        valor: formatarValor(cliente.valor),
 
         dataVencimento: formatarDataExcel(cliente.dataVencimento),
         
