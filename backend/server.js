@@ -27,6 +27,16 @@ const { iniciarCampanha } = require('./services/campanhaService');
 
 const app = express();
 
+process.on('uncaughtException', (error) => {
+    console.error('🚨 UNCAUGHT EXCEPTION');
+    console.error(error);
+});
+
+process.on('unhandledRejection', (reason) => {
+    console.error('🚨 UNHANDLED REJECTION');
+    console.error(reason);
+});
+
 app.use(cors());
 
 app.use(express.json());

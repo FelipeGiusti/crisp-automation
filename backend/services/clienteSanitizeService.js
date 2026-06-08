@@ -5,13 +5,18 @@ function formatarDataExcel(dataExcel) {
 
     const numero = Number(dataExcel);
 
-    if(isNan(numero)){
+    if(isNaN(numero)){
         return dataExcel.toString().trim();
     }
 
-    const data = new Date((numero - 25569) * 86400 * 1000);
+    const data = new Date(Date.UTC(1899,11,30));
+    data.setUTCDate(data.getUTCDate() + numero);
 
-    return data.toLocaleDateString('pt-BR');
+    const dia = String(data.getUTCDate()).padStart(2, '0');
+    const mes = String(data.getUTCMonth() + 1).padStart(2, '0');
+    const ano = data.getUTCFullYear();
+
+    return `${dia}/${mes}/${ano}`;
 }
 
 function formatarValor(valor){

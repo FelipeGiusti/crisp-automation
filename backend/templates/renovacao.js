@@ -13,7 +13,7 @@ Usuários: **{{quantidadeUsuarios}}**
 Propostas: **{{quantidadePropostas}}**
 Documentos: **{{quantidadeDocumentos}}**
 Páginas de captura: **{{quantidadePaginasCaptura}}**
-Valor: **R$ {{valor}}**
+Valor: **{{valor}}**
 Vigência: mais 12 meses a partir do vencimento
 
 Se quiser, posso cuidar de toda a renovação para você, garantindo que tudo fique certinho sem que você precise se preocupar 🙂`

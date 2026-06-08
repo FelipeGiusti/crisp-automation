@@ -16,7 +16,6 @@ const campanhasStore = require('../store/campanhasStore');
 const { campanhas } = campanhasStore;
 const { salvarCampanha } = require('./campanhaPersistenceService');
 const { CAMPANHA_STATUS } = require('../constants/campanhaStatus');
-const { excelDateToBRDate } = require('../utils/dateFormatter');
 
 function iniciarCampanha(caminhoArquivo){
     const campanhaId = uuidv4();
@@ -84,9 +83,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
 
         const emailsProcessados = new Set();
 
-        for(const cliente of clientes){
-            console.log(clienteSanitizado.dataVencimento);
-            
+        for(const cliente of clientes){            
             const clienteSanitizado = sanitizarCliente(cliente);
 
             if(emailsProcessados.has(clienteSanitizado.email)){
@@ -237,9 +234,12 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         return campanhaId;
 
     } catch (error) {
+        console.error('🚨 ERRO NA CAMPANHA');
+        console.error(error);
+
         if(campanhas[campanhaId]){
             campanhas[campanhaId].status = CAMPANHA_STATUS.ERRO;
-            salvarCampanha(campanhasStore.campanhas[campanhaId]);
+            salvarCampanha(campanhas[campanhaId]);
         }
     } finally {
         campanhasStore.campanhaEmExecucao = false;
@@ -248,10 +248,16 @@ async function executarCampanha(campanhaId, caminhoArquivo){
             await browser.close();
         }
 
+        console.log('📂 Caminho do arquivo:', caminhoArquivo);
+        console.log('📂 Existe antes da remoção?', fs.existsSync(caminhoArquivo));
+
         if(fs.existsSync(caminhoArquivo)){
             fs.unlinkSync(caminhoArquivo);
-            console.log('🗑️ Upload removido com sucesso')
+
+            console.log('🗑️ Upload removido com sucesso');
+            console.log('📂 Existe após remoção?', fs.existsSync(caminhoArquivo));
         }
+        console.log('🏁 FIM DO FINALLY');
     }
 
 };
