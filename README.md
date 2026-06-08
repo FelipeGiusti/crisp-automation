@@ -1,285 +1,229 @@
-# Crisp Automation
+# 🚀 Crisp Automation
 
-Sistema fullstack de automação e orquestração de processos, com backend em Node.js e frontend em React (Vite).
+Sistema de automação para envio de campanhas de renovação de planos através da plataforma Crisp, utilizando Playwright para automação do navegador, Node.js no backend e React no frontend.
 
-O projeto foi estruturado para centralizar regras de negócio, execução de rotinas automatizadas, manipulação de dados e interface administrativa para acompanhamento e operação.
+## 📋 Sobre o Projeto
 
----
+O Crisp Automation foi desenvolvido para automatizar o envio de mensagens de renovação para clientes, eliminando tarefas repetitivas e reduzindo o tempo gasto em processos manuais.
 
-# Visão geral
-
-O **Crisp Automation** é uma aplicação voltada para automação de fluxos operacionais, organização de dados e execução de processos internos, com suporte a templates dinâmicos, armazenamento local e painel frontend para interação com o sistema.
-
-Ele funciona como um hub central onde o backend executa as regras e o frontend oferece visibilidade e controle das operações.
+A aplicação permite importar uma planilha Excel contendo informações dos clientes, realizar validações, enviar mensagens automaticamente e acompanhar os resultados através de um painel administrativo.
 
 ---
 
-# Arquitetura
+## ✨ Funcionalidades
 
-O projeto é dividido em dois módulos principais:
+### 📤 Gestão de Campanhas
 
-## Backend (Node.js)
+* Criação de campanhas através de upload de planilhas Excel (.xlsx)
+* Controle de campanhas em execução
+* Bloqueio de execução simultânea de campanhas
+* Histórico de campanhas realizadas
+* Visualização detalhada dos resultados de cada campanha
 
-Responsável por:
+### 📊 Dashboard
 
-* Regras de negócio
-* Processamento de dados
-* Execução de automações
-* Geração de templates
-* Persistência e logs
-* API para consumo do frontend
+* Lista de campanhas executadas
+* Status da campanha:
 
-## Frontend (React + Vite)
+  * Executando
+  * Finalizada
+  * Erro
+* Quantidade de:
 
-Responsável por:
+  * Enviados
+  * Falhas
+  * Inválidos
+  * Duplicados
+* Data de início e término
+* Relatório detalhado por campanha
 
-* Interface administrativa
-* Visualização de dados
-* Interação com endpoints do backend
-* Organização de fluxos e operações
+### 📄 Processamento de Planilhas
+
+* Importação de arquivos Excel
+* Leitura automática dos clientes
+* Sanitização dos dados
+* Validação de informações obrigatórias
+* Tratamento de datas do Excel
+* Formatação automática de valores monetários
+
+### 🤖 Automação
+
+* Login automático no Crisp
+* Navegação automatizada utilizando Playwright
+* Envio automatizado de mensagens
+* Delay aleatório entre envios
+* Retry automático em caso de falha
+* Timeout de segurança para evitar travamentos
+
+### 📈 Relatórios
+
+* Geração de relatórios JSON
+* Registro de:
+
+  * Sucessos
+  * Falhas
+  * Clientes inválidos
+  * Registros duplicados
+* Histórico persistido localmente
+
+### 🧹 Limpeza Automática
+
+* Remoção automática dos arquivos enviados
+* Encerramento seguro do navegador
+* Liberação automática de recursos após a execução
 
 ---
 
-# Stack utilizada
+## 🛠️ Tecnologias Utilizadas
 
-## Backend
-
-* Node.js
-* JavaScript (ESModules)
-* Arquitetura modular
-* Manipulação de arquivos (fs)
-* Estrutura baseada em serviços
-
-## Frontend
+### Frontend
 
 * React
-* Vite
-* JavaScript (ES6+)
+* Axios
 * CSS
 
-## Infraestrutura local
+### Backend
 
-* Scripts batch para inicialização
-* Variáveis de ambiente (.env)
+* Node.js
+* Express
+* Multer
+* UUID
+
+### Automação
+
+* Playwright
+
+### Manipulação de Arquivos
+
+* XLSX
+* File System (fs)
 
 ---
 
-# Estrutura do projeto
+## 📂 Estrutura do Projeto
 
-```
-CRISP-AUTOMATION/
-│
-├── backend/
-│   ├── constants/
-│   ├── data/
-│   ├── logs/
-│   ├── node_modules/
-│   ├── services/
-│   ├── storage/
-│   ├── store/
-│   ├── templates/
-│   ├── uploads/
-│   ├── utils/
-│   ├── .env
-│   ├── server.js
-│   ├── package.json
-│   └── package-lock.json
+```bash
+crisp-automation/
 │
 ├── frontend/
-│   ├── node_modules/
-│   ├── public/
 │   ├── src/
-│   │   ├── assets/
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── eslint.config.js
-│   ├── package.json
-│   └── package-lock.json
+│   ├── public/
+│   └── package.json
 │
-├── iniciar-crisp-automatio.bat
+├── backend/
+│   ├── services/
+│   ├── routes/
+│   ├── store/
+│   ├── templates/
+│   ├── utils/
+│   ├── uploads/
+│   ├── logs/
+│   └── server.js
+│
 └── README.md
 ```
 
----
+## ⚙️ Como Executar
 
-# Funcionalidades implementadas
-
-## Backend
-
-* Estrutura modular baseada em services
-* Gerenciamento de templates dinâmicos
-* Armazenamento de dados locais
-* Sistema de logs
-* Upload e manipulação de arquivos
-* Organização de estado via store
-* Constantes centralizadas
-* API para comunicação com frontend
-
-## Frontend
-
-* Interface em React com Vite
-* Estrutura de páginas/componentes organizada
-* Consumo de API backend
-* Exibição de dados operacionais
-* Estilização base com CSS
-
-## Sistema
-
-* Integração entre frontend e backend
-* Execução local simplificada via script .bat
-* Estrutura preparada para expansão modular
-
----
-
-# API (Backend)
-
-O backend expõe endpoints para:
-
-* Gerenciamento de dados
-* Execução de fluxos
-* Leitura de arquivos
-* Manipulação de templates
-* Operações administrativas
-
-*(Os endpoints podem variar conforme evolução do projeto)*
-
----
-
-# Instalação
-
-## Clonar o repositório
-
-```bash
-git clone <repo-url>
-```
-
-## Backend
+### Backend
 
 ```bash
 cd backend
 npm install
+node server.js
 ```
 
-## Frontend
+Servidor disponível em:
+
+```bash
+http://localhost:3000
+```
+
+### Frontend
 
 ```bash
 cd frontend
 npm install
-```
-
----
-
-# Execução do projeto
-
-## Backend
-
-```bash
-node server.js
-```
-
-## Frontend
-
-```bash
 npm run dev
 ```
 
----
+Aplicação disponível em:
 
-# Execução simplificada (Windows)
-
-O projeto inclui um script `.bat` para inicialização local rápida:
-
-```
-iniciar-crisp-automatio.bat
+```bash
+http://localhost:5173
 ```
 
-Esse script automatiza a inicialização do backend e frontend em ambientes locais.
+---
+
+## 📄 Modelo da Planilha
+
+A planilha deve conter colunas compatíveis com os dados utilizados no template:
+
+| Campo                    | Exemplo                                 |
+| ------------------------ | --------------------------------------- |
+| nome                     | João Silva                              |
+| email                    | [joao@email.com](mailto:joao@email.com) |
+| plano                    | Plano Empresarial                       |
+| valor                    | 199.90                                  |
+| dataVencimento           | 01/07/2026                              |
+| quantidadeUsuarios       | 10                                      |
+| quantidadePropostas      | 50                                      |
+| quantidadeDocumentos     | 100                                     |
+| quantidadePaginasCaptura | 5                                       |
 
 ---
 
-# Variáveis de ambiente
+## 🔒 Recursos de Segurança
 
-No backend:
+* Validação de dados antes do envio
+* Controle de campanha única em execução
+* Retry automático em falhas temporárias
+* Timeout de segurança
+* Tratamento de exceções
+* Limpeza automática de arquivos temporários
 
-```env
-PORT=3000
+---
+
+## 📈 Fluxo da Aplicação
+
+```text
+Upload da planilha
+        ↓
+Validação dos dados
+        ↓
+Login automático no Crisp
+        ↓
+Processamento dos clientes
+        ↓
+Envio das mensagens
+        ↓
+Registro dos resultados
+        ↓
+Geração do relatório
+        ↓
+Persistência da campanha
+        ↓
+Remoção do arquivo temporário
 ```
 
-Outras variáveis podem ser adicionadas conforme necessidade de integrações futuras.
+---
+
+## 🎯 Objetivos do Projeto
+
+* Automatizar campanhas de renovação
+* Reduzir esforço operacional
+* Padronizar comunicações
+* Melhorar rastreabilidade dos envios
+* Fornecer histórico completo das campanhas realizadas
 
 ---
 
-# Conceitos aplicados
+## 👨‍💻 Autor
 
-* Arquitetura modular
-* Separação de responsabilidades
-* Estrutura escalável
-* Comunicação cliente-servidor
-* Persistência local de dados
-* Organização por camadas (services / store / utils)
+**Felipe Giusti**
 
----
+Analista de Suporte Técnico | Desenvolvedor Full Stack | Automação de Processos
 
-# Organização do backend
+GitHub: https://github.com/felipegiusti
 
-* **services/** → regras de negócio
-* **store/** → estado da aplicação
-* **templates/** → templates dinâmicos
-* **storage/** → persistência de dados
-* **uploads/** → arquivos enviados
-* **logs/** → registros do sistema
-* **utils/** → funções auxiliares
-* **constants/** → valores globais
-
----
-
-# Organização do frontend
-
-* **src/** → código principal
-* **assets/** → imagens e recursos
-* **App.jsx** → componente raiz
-* **main.jsx** → entrypoint
-
----
-
-# Logs e rastreabilidade
-
-O sistema mantém logs locais para:
-
-* Execuções de processos
-* Erros e exceções
-* Operações do sistema
-
----
-
-# Possíveis evoluções
-
-* Autenticação de usuários
-* Dashboard analítico
-* Banco de dados relacional
-* Deploy em nuvem
-* Sistema de filas
-* Observabilidade e métricas
-
----
-
-# Segurança
-
-* Uso de variáveis de ambiente
-* Separação de dados sensíveis
-* Estrutura preparada para autenticação futura
-
----
-
-# Objetivo do projeto
-
-Centralizar e simplificar processos operacionais, reduzindo tarefas manuais e permitindo escalabilidade através de automações estruturadas e interface web.
-
----
-
-# Autor
-
-Felipe Giusti
+LinkedIn: https://linkedin.com/in/felipegiusti2806

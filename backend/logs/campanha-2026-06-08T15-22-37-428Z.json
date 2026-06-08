@@ -1,0 +1,37 @@
+{
+  "inicioExecucao": "2026-06-08T15:20:00.387Z",
+  "fimExecucao": "2026-06-08T15:22:37.423Z",
+  "tempoTotalMinutos": "2.62",
+  "resumo": {
+    "enviados": 4,
+    "falhas": 0,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "natalia@tissei.adv.br",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:20:40.744Z"
+    },
+    {
+      "email": "rafaelachavesadv@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:21:15.198Z"
+    },
+    {
+      "email": "mirella@santosegoncalves.com.br",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:21:49.531Z"
+    },
+    {
+      "email": "elizabethgomesadvogada@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:22:25.532Z"
+    }
+  ]
+}

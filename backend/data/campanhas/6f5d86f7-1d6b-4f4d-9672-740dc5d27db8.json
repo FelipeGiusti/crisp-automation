@@ -1,0 +1,44 @@
+{
+  "id": "6f5d86f7-1d6b-4f4d-9672-740dc5d27db8",
+  "codigo": "CMP-1780932000386",
+  "status": "finalizada",
+  "enviados": 4,
+  "falhas": 0,
+  "invalidos": 0,
+  "duplicados": 0,
+  "iniciadoEm": "2026-06-08T15:20:00.386Z",
+  "totalClientes": 4,
+  "finalizadaEm": "2026-06-08T15:22:37.430Z",
+  "resumo": {
+    "enviados": 4,
+    "falhas": 0,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "natalia@tissei.adv.br",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:20:40.744Z"
+    },
+    {
+      "email": "rafaelachavesadv@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:21:15.198Z"
+    },
+    {
+      "email": "mirella@santosegoncalves.com.br",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:21:49.531Z"
+    },
+    {
+      "email": "elizabethgomesadvogada@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T15:22:25.532Z"
+    }
+  ]
+}
