@@ -1,0 +1,19 @@
+{
+  "inicioExecucao": "2026-06-08T14:10:54.253Z",
+  "fimExecucao": "2026-06-08T14:11:23.919Z",
+  "tempoTotalMinutos": "0.49",
+  "resumo": {
+    "enviados": 0,
+    "falhas": 1,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "mmrj2704@gmail.com",
+      "status": "falha",
+      "mensagem": "Erro: locator.click: Target page, context or browser has been closed",
+      "data": "2026-06-08T14:11:13.664Z"
+    }
+  ]
+}

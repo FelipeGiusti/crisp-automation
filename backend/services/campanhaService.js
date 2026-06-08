@@ -136,7 +136,7 @@ async function executarCampanha(campanhaId, caminhoArquivo){
                 console.log(`🔁 Tentativa ${tentativas} para enviar e-mail para ${clienteSanitizado.nome} (${clienteSanitizado.email})`);
 
                 try {
-                    enviou = await Promisse.race([
+                    enviou = await Promise.race([
                         dispararEmail(page, clienteSanitizado, mensagem),
                         new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout no envio do e-mail')), 30000))
                     ]);

@@ -6,6 +6,8 @@ const path = require('path');
 
 const { campanhas } = require('./store/campanhasStore');
 const campanhasStore = require('./store/campanhasStore');
+campanhasStore.campanhaEmExecucao = false;
+
 const { salvarCampanha, buscarCampanhas, buscarCampanhaPorId } = require('./services/campanhaPersistenceService');
 
 const storage = multer.diskStorage({
@@ -50,14 +52,6 @@ app.post('/campanhas', upload.single('arquivo'), async (req, res) => {
                 sucesso: false,
                 mensagem: 'Já existe uma campanha em execução.'
             });
-        }
-
-        campanhasStore.campanhaEmExecucao = true;
-
-        if(campanhasStore.campanhaEmExecucao){
-            return res.status(400).json({
-                erro: 'Já existe uma campanha em execução. Por favor, aguarde a conclusão antes de iniciar outra.'
-            })
         }
 
         campanhasStore.campanhaEmExecucao = true;

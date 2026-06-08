@@ -30,7 +30,10 @@ function App(){
       
       carregarCampanhas();
     } catch (error) {
+      console.error(error.response?.data);
+      console.error(error.response?.status);
       console.error(error);
+
 
       alert('Erro ao iniciar campanha');
     }
