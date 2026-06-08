@@ -16,6 +16,7 @@ const campanhasStore = require('../store/campanhasStore');
 const { campanhas } = campanhasStore;
 const { salvarCampanha } = require('./campanhaPersistenceService');
 const { CAMPANHA_STATUS } = require('../constants/campanhaStatus');
+const { excelDateToBRDate } = require('../utils/dateFormatter');
 
 function iniciarCampanha(caminhoArquivo){
     const campanhaId = uuidv4();
@@ -84,6 +85,8 @@ async function executarCampanha(campanhaId, caminhoArquivo){
         const emailsProcessados = new Set();
 
         for(const cliente of clientes){
+            console.log(clienteSanitizado.dataVencimento);
+            
             const clienteSanitizado = sanitizarCliente(cliente);
 
             if(emailsProcessados.has(clienteSanitizado.email)){

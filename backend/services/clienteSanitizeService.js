@@ -1,3 +1,19 @@
+function formatarDataExcel(dataExcel) {
+    if(!dataExcel){
+        return '';
+    }
+
+    const numero = Number(dataExcel);
+
+    if(isNan(numero)){
+        return dataExcel.toString().trim();
+    }
+
+    const data = new Date((numero - 25569) * 86400 * 1000);
+
+    return data.toLocaleDateString('pt-BR');
+}
+
 function sanitizarCliente(cliente){
     return {
         ...cliente,
@@ -19,9 +35,7 @@ function sanitizarCliente(cliente){
             ?.toString()
             ?.trim(),
 
-        dataVencimento: cliente.dataVencimento
-            ?.toString()
-            ?.trim(),
+        dataVencimento: formatarDataExcel(cliente.dataVencimento),
         
         quantidadeUsuarios: cliente.quantidadeUsuarios
             ?.toString()

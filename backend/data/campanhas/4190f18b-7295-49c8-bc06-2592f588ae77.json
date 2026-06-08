@@ -1,0 +1,26 @@
+{
+  "id": "4190f18b-7295-49c8-bc06-2592f588ae77",
+  "codigo": "CMP-1780928455925",
+  "status": "finalizada",
+  "enviados": 1,
+  "falhas": 0,
+  "invalidos": 0,
+  "duplicados": 0,
+  "iniciadoEm": "2026-06-08T14:20:55.925Z",
+  "totalClientes": 1,
+  "finalizadaEm": "2026-06-08T14:21:46.241Z",
+  "resumo": {
+    "enviados": 1,
+    "falhas": 0,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "felipeegiusti@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T14:21:34.457Z"
+    }
+  ]
+}

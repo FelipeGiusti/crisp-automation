@@ -1,0 +1,19 @@
+{
+  "inicioExecucao": "2026-06-08T14:20:55.926Z",
+  "fimExecucao": "2026-06-08T14:21:46.236Z",
+  "tempoTotalMinutos": "0.84",
+  "resumo": {
+    "enviados": 1,
+    "falhas": 0,
+    "invalidos": 0,
+    "duplicados": 0
+  },
+  "detalhes": [
+    {
+      "email": "felipeegiusti@gmail.com",
+      "status": "enviado",
+      "mensagem": "E-mail enviado com sucesso",
+      "data": "2026-06-08T14:21:34.457Z"
+    }
+  ]
+}
